@@ -75,3 +75,5 @@ export default function Antigravity({
         style={{ color: 'blue', fontWeight: 'bold', fontSize: '40px' }}
     />
 </Typography>
+
+git config--global user.email "druthigowda35@gmail.com"
