@@ -1,10 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-    Box,
-    Card,
-    CardMedia,
-    Typography,
-} from "@mui/material";
+import { Box, Card, CardMedia, Typography, useMediaQuery, useTheme } from "@mui/material";
 
 const books = [
     {
@@ -23,7 +18,7 @@ const books = [
         id: 3,
         title: "Construction Planning",
         author: "Civil Experts",
-        image: "https://images.unsplash.com/photo-1581093458791-9f3c3900df9b",
+        image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e",
     },
     {
         id: 4,
@@ -41,6 +36,9 @@ const books = [
 
 export default function CardCarousel() {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // <600px
+    const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md")); // 600-900px
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -60,11 +58,17 @@ export default function CardCarousel() {
         const pos = getPosition(index);
         const isCenter = pos === 0;
 
+        // Responsive sizing
+        const cardWidth = isMobile ? 180 : isTablet ? 220 : 250;
+        const cardHeight = isMobile ? 260 : isTablet ? 320 : 350;
+        const cardSpacing = isMobile ? 200 : isTablet ? 240 : 280;
+        const scale = isCenter ? (isMobile ? 1.1 : isTablet ? 1.15 : 1.25) : isMobile ? 0.8 : isTablet ? 0.85 : 0.85;
+
         return {
             position: "absolute",
-            width: 240,
-            height: 350,
-            transform: `translateX(${pos * 280}px) scale(${isCenter ? 1.25 : 0.85})`,
+            width: cardWidth,
+            height: cardHeight,
+            transform: `translateX(${pos * cardSpacing}px) scale(${scale})`,
             transition: "all 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
             zIndex: isCenter ? 10 : 5 - Math.abs(pos),
             opacity: Math.abs(pos) > 2 ? 0 : 1,
@@ -79,46 +83,48 @@ export default function CardCarousel() {
     return (
         <Box
             sx={{
-                height: "85vh",
+                height: isMobile ? "75vh" : "85vh",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
                 bgcolor: "#fff",
-                mb: '-20'
+                px: { xs: 2, sm: 4, md: 6 },
             }}
         >
+            {/* Title */}
             <Typography
-                variant='h5'
+                variant={isMobile ? "h6" : "h5"}
                 sx={{
-                    mt: -15,
-                    mb: 6,
-                    color: 'purple',
+                    mb: 3,
+                    color: "purple",
                     fontWeight: 700,
+                    textAlign: "center",
                 }}
             >
                 OUR SERVICES
             </Typography>
 
             <Typography
-                variant="h3"
+                variant={isMobile ? "h6" : "h3"}
                 sx={{
-                    mt: -5,
-                    mb: 6,
-                    background: 'black',
+                    mb: 4,
+                    fontWeight: 600,
+                    textAlign: "center",
+                    background: "black",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
-                    fontWeight: 700,
                 }}
             >
-                Complete Construction & Design Solutions
+                Complete Construction and Design Solutions
             </Typography>
 
+            {/* Carousel */}
             <Box
                 sx={{
                     position: "relative",
                     width: "100%",
-                    height: 450,
+                    height: isMobile ? 300 : 450,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -126,17 +132,12 @@ export default function CardCarousel() {
                 }}
             >
                 {books.map((book, index) => (
-                    <Card
-                        key={book.id}
-                        sx={getStyle(index)}
-                        onClick={() => setCurrentIndex(index)}
-
-                    >
+                    <Card key={book.id} sx={getStyle(index)} onClick={() => setCurrentIndex(index)}>
                         <CardMedia
                             component="img"
                             image={book.image}
                             alt={book.title}
-                            sx={{ height: 280, objectFit: "cover" }}
+                            sx={{ height: isMobile ? 180 : 280, objectFit: "cover" }}
                         />
 
                         <Box sx={{ p: 1.5 }}>
@@ -144,6 +145,7 @@ export default function CardCarousel() {
                                 variant="subtitle1"
                                 sx={{
                                     fontWeight: 600,
+                                    fontSize: isMobile ? "0.8rem" : "1rem",
                                     whiteSpace: "nowrap",
                                     overflow: "hidden",
                                     textOverflow: "ellipsis",
@@ -156,6 +158,7 @@ export default function CardCarousel() {
                                 variant="body2"
                                 color="text.secondary"
                                 sx={{
+                                    fontSize: isMobile ? "0.7rem" : "0.9rem",
                                     whiteSpace: "nowrap",
                                     overflow: "hidden",
                                     textOverflow: "ellipsis",
@@ -169,17 +172,16 @@ export default function CardCarousel() {
             </Box>
 
             {/* Dots */}
-            <Box sx={{ display: "flex", gap: 1, mt: 6, mb: -15 }}>
+            <Box sx={{ display: "flex", gap: 1, mt: 4 }}>
                 {books.map((_, index) => (
                     <Box
                         key={index}
                         onClick={() => setCurrentIndex(index)}
                         sx={{
-                            width: currentIndex === index ? 28 : 10,
-                            height: 10,
-                            borderRadius: 0,
-                            bgcolor:
-                                currentIndex === index ? "primary.main" : "grey.400",
+                            width: currentIndex === index ? (isMobile ? 16 : 28) : (isMobile ? 8 : 10),
+                            height: isMobile ? 8 : 10,
+                            borderRadius: 2,
+                            bgcolor: currentIndex === index ? "primary.main" : "grey.400",
                             cursor: "pointer",
                             transition: "all 0.3s ease",
                         }}

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Box, Grid, Typography, Button, Stack } from '@mui/material';
+import { Box, Grid, Typography, Button, Stack, useMediaQuery } from '@mui/material';
 import { gsap } from 'gsap';
 
 import banner from '../asstes/banner1.jpg';
@@ -38,6 +38,8 @@ const services = [
 
 const Banner = () => {
     const cardsRef = useRef([]);
+    const isMobile = useMediaQuery('(max-width:600px)');
+    const isTablet = useMediaQuery('(min-width:601px) and (max-width:1200px)');
 
     /* Entrance animation */
     useEffect(() => {
@@ -77,19 +79,26 @@ const Banner = () => {
     return (
         <Box
             sx={{
-                height: '95vh',
+                height: { xs: '240vh', md: '95vh' },
                 position: 'relative',
                 overflow: 'hidden',
                 backgroundImage: `linear-gradient(rgba(6,0,16,.75), rgba(6,0,16,.75)), url(${banner})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 display: 'flex',
-                alignItems: 'center'
+                alignItems: { xs: 'flex-start', md: 'center' },
+                py: { xs: 6, md: 0 }
             }}
         >
-            <Grid container px={{ xs: 2, md: 8 }} spacing={7}>
+            <Grid container px={{ xs: 2, md: 8 }} spacing={{ xs: 4, md: 7 }}>
                 {/* LEFT CONTENT */}
-                <Grid item xs={12} md={6}>
+                <Grid
+                    item
+                    xs={12}
+                    md={6}
+                    textAlign={{ xs: 'center', md: 'left' }}
+                    mt={{ xs: 4, md: 0 }}
+                >
                     <Typography
                         sx={{
                             display: 'inline-block',
@@ -97,9 +106,9 @@ const Banner = () => {
                             py: 1,
                             mb: 2,
                             borderRadius: '20px',
-                            backgroundColor: '#22c55e',
-                            color: '#fff',
-                            fontSize: 14,
+                            backgroundColor: 'gold',
+                            color: '#000',
+                            fontSize: { xs: 12, sm: 14 },
                             fontWeight: 600
                         }}
                     >
@@ -111,21 +120,36 @@ const Banner = () => {
                             color: '#fff',
                             fontWeight: 700,
                             mb: 2,
-                            fontSize: { xs: '2.5rem', md: '3.5rem' }
+                            fontSize: { xs: '2rem', sm: '2.5rem', md: '3.5rem' },
+                            lineHeight: 1.2
                         }}
                     >
                         Transform Your <br /> Vision Into Reality
                     </Typography>
 
-                    <Typography sx={{ color: '#e5e7eb', maxWidth: 520, mb: 4 }}>
+                    <Typography
+                        sx={{
+                            color: '#e5e7eb',
+                            maxWidth: { xs: '100%', md: 520 },
+                            mx: { xs: 'auto', md: 0 },
+                            mb: 4,
+                            fontSize: { xs: 14, sm: 15, md: 16 },
+                            textAlign: { xs: 'center', md: 'left' }
+                        }}
+                    >
                         From foundation to finishing touches—we build your dream space with
                         precision, quality, and stunning interior design.
                     </Typography>
 
-                    <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} mb={6}>
+                    <Stack
+                        direction={{ xs: 'column', sm: 'row' }}
+                        spacing={2}
+                        mb={6}
+                        justifyContent={{ xs: 'center', md: 'flex-start' }}
+                    >
                         <Button
                             sx={{
-                                backgroundColor: '#22c55e',
+                                backgroundColor: 'gold',
                                 color: '#000',
                                 px: 3,
                                 py: 1.4,
@@ -161,7 +185,11 @@ const Banner = () => {
                     </Stack>
 
                     {/* STATS */}
-                    <Stack direction="row" spacing={6}>
+                    <Stack
+                        direction={{ xs: 'column', sm: 'row' }}
+                        spacing={{ xs: 3, sm: 6 }}
+                        alignItems={{ xs: 'center', sm: 'flex-start' }}
+                    >
                         <Stat value="15+" label="Years Experience" />
                         <Stat value="500+" label="Projects Completed" />
                         <Stat value="100%" label="Client Satisfaction" />
@@ -170,7 +198,7 @@ const Banner = () => {
 
                 {/* RIGHT CARDS */}
                 <Grid item xs={12} md={6}>
-                    <Grid container rowSpacing={10} columnSpacing={4}>
+                    <Grid container rowSpacing={{ xs: 4, md: 10 }} columnSpacing={{ xs: 2, md: 4 }}>
                         {services.map((item, i) => (
                             <Grid item xs={12} sm={6} key={i}>
                                 <Box
@@ -178,13 +206,17 @@ const Banner = () => {
                                     onMouseEnter={() => handleMouseEnter(cardsRef.current[i])}
                                     onMouseLeave={() => handleMouseLeave(cardsRef.current[i])}
                                     sx={{
-                                        backdropFilter: 'blur(16px)',
-                                        backgroundColor: 'rgba(255,255,255,0.14)',
+                                        backdropFilter: 'blur(10px)',
+                                        backgroundColor: 'white',
+
+                                        WebkitBackdropFilter: 'blur(10px)', // Safari support
                                         borderTopLeftRadius: '20%',
                                         borderBottomRightRadius: '20%',
-                                        p: 4,
-                                        color: '#fff',
-                                        border: '3px solid rgba(255,255,255,0.25)',
+                                        p: { xs: 3, md: 4 },
+                                        color: 'black',
+                                        border: '3px solid gold',
+                                        cursor: 'pointer',
+                                        transition: 'all 0.3s ease',
                                     }}
                                 >
                                     <Box
@@ -206,7 +238,7 @@ const Banner = () => {
                                         {item.title}
                                     </Typography>
 
-                                    <Typography sx={{ color: '#e5e7eb', fontSize: 14 }}>
+                                    <Typography sx={{ color: 'black', fontSize: { xs: 12, md: 14 } }}>
                                         {item.desc}
                                     </Typography>
                                 </Box>
@@ -241,18 +273,17 @@ const Banner = () => {
                         d="M0,40 C240,120 480,120 720,80 960,40 1200,40 1440,60 L1440,0 L0,0 Z"
                     />
                 </svg>
-
             </Box>
         </Box>
     );
 };
 
 const Stat = ({ value, label }) => (
-    <Box>
-        <Typography sx={{ color: 'white', fontSize: 32, fontWeight: 700 }}>
+    <Box textAlign={{ xs: 'center', sm: 'left' }}>
+        <Typography sx={{ color: 'white', fontSize: { xs: 24, md: 32 }, fontWeight: 700 }}>
             {value}
         </Typography>
-        <Typography sx={{ color: '#e5e7eb', fontSize: 14 }}>
+        <Typography sx={{ color: '#e5e7eb', fontSize: { xs: 12, md: 14 } }}>
             {label}
         </Typography>
     </Box>

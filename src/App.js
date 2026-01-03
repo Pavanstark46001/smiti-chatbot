@@ -1,10 +1,13 @@
 import logo from './logo.svg';
 import './App.css';
-import SplineLayout from './components/SplineLayout';
-import Canvas from './components/Canvas';
+import Process from './components/Process';
+import WhuUs from './components/WhuUs';
 import Header from './components/Header';
 import Banner from './components/Banner';
 import Services from './components/Services';
+import About from './components/Aboutus';
+import Footer from './components/Footer';
+import Contact from './components/Contact'
 
 function App() {
   return (
@@ -13,7 +16,11 @@ function App() {
       <Banner />
       {/* <SplineLayout /> */}
       <Services />
-      <Canvas />
+      <About />
+      <WhuUs />
+      <Process />
+      <Contact />
+      <Footer />
 
     </div>
   );

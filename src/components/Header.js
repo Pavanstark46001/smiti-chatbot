@@ -15,13 +15,15 @@ import {
     Box,
     useTheme,
     useMediaQuery,
+    Divider,
 } from "@mui/material";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import CloseIcon from "@mui/icons-material/Close";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+
 import image from "../asstes/image.png";
 
 const Header = () => {
@@ -37,12 +39,13 @@ const Header = () => {
 
     return (
         <>
-            <AppBar position="static" sx={{ background: "#ebedeb", boxShadow: "none", }}>
-                <Toolbar sx={{ height: 100, ml: 5 }}>
+            {/* ================= APP BAR ================= */}
+            <AppBar position="static" sx={{ background: "#ebedeb", boxShadow: "none" }}>
+                <Toolbar sx={{ height: 100, px: 3 }}>
                     <Grid container alignItems="center">
                         {/* Logo */}
-                        <Grid item xs={6} md={2}>
-                            <img src={image} alt="logo" style={{ height: 60, }} />
+                        <Grid item xs={6} md={3}>
+                            <img src={image} alt="logo" style={{ height: 60 }} />
                         </Grid>
 
                         {/* Desktop Menu */}
@@ -80,7 +83,7 @@ const Header = () => {
                         )}
 
                         {/* CTA / Hamburger */}
-                        <Grid item xs={6} md={3} textAlign="left" sx={{ ml: 0 }}>
+                        <Grid item xs={6} md={2} textAlign="right">
                             {isMobile ? (
                                 <IconButton
                                     onClick={() => setDrawerOpen(true)}
@@ -97,84 +100,70 @@ const Header = () => {
                                     sx={{
                                         textTransform: "none",
                                         fontWeight: 600,
-                                        fontSize: "20px",
-                                        px: 1,
-                                        py: 1,
-                                        width: "80%",
+                                        fontSize: 18,
+                                        px: 3,
+                                        py: 1.2,
                                         borderRadius: "30px",
                                         color: "#fff",
                                         background: "#303940",
-                                        overflow: "hidden",
                                         display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
+                                        alignItems: 'flex-end',
                                         gap: 1,
-                                        position: "relative",
-                                        transition: "all 0.3s ease",
                                         boxShadow: "0 8px 20px rgba(0,0,0,0.25)",
-
-                                        "&:hover .btn-text": {
-                                            transform: "translateX(-6px)",
-                                        },
-                                        "&:hover .btn-arrow": {
-                                            opacity: 1,
-                                            transform: "translateX(4px)",
-                                        },
                                     }}
                                 >
-                                    {/* Animated Text */}
-                                    <Box
-                                        className="btn-text"
-                                        sx={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                            transition: "transform 0.3s ease",
-
-                                        }}
-                                    >
-                                        Get A Quote
-                                    </Box>
-
-                                    {/* Arrow */}
-                                    <ArrowForwardIcon
-                                        sx={{
-                                            fontSize: 30,
-                                            ml: 0.5,
-                                            animation: "arrowMove 1.2s ease-in-out infinite",
-                                            "@keyframes arrowMove": {
-                                                "0%": {
-                                                    transform: "translateX(0)",
-                                                    opacity: 0.6,
-                                                },
-                                                "50%": {
-                                                    transform: "translateX(6px)",
-                                                    opacity: 1,
-                                                },
-                                                "100%": {
-                                                    transform: "translateX(0)",
-                                                    opacity: 0.6,
-                                                },
-                                            },
-                                        }}
-                                    />
-
+                                    Get A Quote
+                                    <ArrowForwardIcon />
                                 </Button>
                             )}
                         </Grid>
-
                     </Grid>
                 </Toolbar>
             </AppBar>
 
-            {/* Mobile Drawer */}
-            <Drawer anchor="right" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
-                <Box sx={{ width: 280 }}>
-                    <List>
+            {/* ================= MOBILE DRAWER ================= */}
+            <Drawer
+                anchor="right"
+                open={drawerOpen}
+                onClose={() => setDrawerOpen(false)}
+            >
+                <Box
+                    sx={{
+                        width: 300,
+                        height: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                    }}
+                >
+                    {/* Drawer Header */}
+                    <Box
+                        sx={{
+                            px: 2,
+                            py: 2,
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            borderBottom: "1px solid #e0e0e0",
+                        }}
+                    >
+                        <img src={image} alt="logo" style={{ height: 40 }} />
+                        <IconButton onClick={() => setDrawerOpen(false)}>
+                            <CloseIcon />
+                        </IconButton>
+                    </Box>
+
+                    {/* Drawer Menu */}
+                    <List sx={{ flexGrow: 1 }}>
                         <DrawerItem label="About Us" />
 
                         {/* Services */}
-                        <ListItemButton onClick={() => setMobileServicesOpen(!mobileServicesOpen)}>
-                            <ListItemText primary="Services" />
+                        <ListItemButton
+                            onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                        >
+                            <ListItemText
+                                primary="Services"
+                                primaryTypographyProps={{ fontWeight: 600 }}
+                            />
                             {mobileServicesOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                         </ListItemButton>
 
@@ -187,8 +176,13 @@ const Header = () => {
                         </Collapse>
 
                         {/* Projects */}
-                        <ListItemButton onClick={() => setMobileProjectsOpen(!mobileProjectsOpen)}>
-                            <ListItemText primary="Projects" />
+                        <ListItemButton
+                            onClick={() => setMobileProjectsOpen(!mobileProjectsOpen)}
+                        >
+                            <ListItemText
+                                primary="Projects"
+                                primaryTypographyProps={{ fontWeight: 600 }}
+                            />
                             {mobileProjectsOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                         </ListItemButton>
 
@@ -205,13 +199,34 @@ const Header = () => {
                         <DrawerItem label="Blog" />
                         <DrawerItem label="Contact Us" />
                     </List>
+
+                    <Divider />
+
+                    {/* Mobile CTA */}
+                    <Box sx={{ p: 2 }}>
+                        <Button
+                            fullWidth
+                            sx={{
+                                textTransform: "none",
+                                fontWeight: 600,
+                                fontSize: 16,
+                                py: 1.2,
+                                borderRadius: "30px",
+                                color: "#fff",
+                                background: "#303940",
+                            }}
+                        >
+                            Get A Quote
+                        </Button>
+                    </Box>
                 </Box>
             </Drawer>
         </>
     );
 };
 
-/* Desktop Nav Button */
+/* ================= REUSABLE COMPONENTS ================= */
+
 const NavButton = ({ label }) => (
     <Button
         sx={{
@@ -226,7 +241,6 @@ const NavButton = ({ label }) => (
     </Button>
 );
 
-/* Desktop Dropdown WITH animated menu icon */
 const DropdownButton = ({ label, anchor, setAnchor, items }) => {
     const open = Boolean(anchor);
 
@@ -245,7 +259,6 @@ const DropdownButton = ({ label, anchor, setAnchor, items }) => {
                 {label}
             </Button>
 
-
             <Menu anchorEl={anchor} open={open} onClose={() => setAnchor(null)}>
                 {items.map((item) => (
                     <MenuItem key={item} onClick={() => setAnchor(null)}>
@@ -257,7 +270,6 @@ const DropdownButton = ({ label, anchor, setAnchor, items }) => {
     );
 };
 
-/* Drawer Items */
 const DrawerItem = ({ label }) => (
     <ListItemButton>
         <ListItemText primary={label} />
